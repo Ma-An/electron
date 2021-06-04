@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="python.css">
+    <script src="https://unpkg.com/vue@2.6.13"></script>
+    <script async src="./python.js"></script>
+  </head>
+  <header>Python Scripts</header>
+  <body>
+
+    <div id="menu-container">
+      <a href="../../index.html"><button class="content-btn">Home</button></a>
+      <button v-on:click="displayCalc" class="content-btn">Calculator</button>
+      <button v-on:click="displayPing" class="content-btn">Ping Main</button>
+    </div>
+
+    <div v-if="contentType" id="content-container">
+      <div v-if="contentType === 'pyCalc'">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+
+        <div style="text-align: center; margin-bottom: 2vh;" id="pyCalculator">
+          <input v-model="contentData.leftNumber" class="content-input"></input>
+          <select v-model="contentData.operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="x">x</option>
+            <option value="/">/</option>
+          </select>
+          <input v-model="contentData.rightNumber" class="content-input"></input>
+          <button v-on:click="pyCalculate">Calc</button>
+          <p v-if="contentData.result"> = {{ contentData.result }}</p>
+        </div>
+
+      </div>
+
+      <div v-if="contentType === 'pinger'" id="pinger">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+        <p v-if="contentData" style="text-align: center;">Received message: {{ contentData }}</p>
+      </div>
+  
+    </div>
+  </body>
+</html>

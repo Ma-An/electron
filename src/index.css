@@ -1,0 +1,10 @@
+.content-btn {
+  width: 10vh;
+  height: 5vw;
+  display: block;
+  margin-top: 2%;
+}
+
+#contentDiv {
+  width: 100%;
+}

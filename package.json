@@ -1,0 +1,20 @@
+{
+  "name": "my-electron-app",
+  "version": "1.0.0",
+  "description": "\"Automator\"",
+  "main": "main.js",
+  "author": "Andy Ma",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^13.0.1",
+    "eslint": "^7.27.0",
+    "eslint-config-google": "^0.14.0"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "python-shell": "^3.0.0",
+    "vue": "^2.6.13"
+  }
+}

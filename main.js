@@ -1,0 +1,30 @@
+const {app, BrowserWindow} = require('electron');
+const {ipcMain} = require('electron');
+const path = require('path');
+
+// get rid of this garbage from my screen
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
+function createWindow() {
+
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      preload: 'preload.js'
+    }
+  });
+
+  win.loadFile('./src/index.html');
+}
+
+app.whenReady().then(() => {
+  createWindow();
+});
+
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log(arg); // prints "ping"
+  event.reply('synchronous-reply', 'pong');
+});
