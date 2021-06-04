@@ -6,7 +6,6 @@ const path = require('path');
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 function createWindow() {
-
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -24,7 +23,9 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-ipcMain.on('synchronous-message', (event, arg) => {
-  console.log(arg); // prints "ping"
-  event.reply('synchronous-reply', 'pong');
+let counter = 0;
+ipcMain.on('synchronous-message', (event, message) => {
+  console.log(message); // prints "ping"
+  counter +=1;
+  event.reply('synchronous-reply', `pong. we've ponged: ${counter} time(s)`);
 });

@@ -27,13 +27,11 @@ async function displayCalc() {
   content.title = 'Python Calculator';
   content.contentType = 'pyCalc';
 
-  if (!Object.keys(content.contentData).length) {
-    content.contentData = {
-      leftNumber: '',
-      rightNumber: '',
-      operator: '',
-      result: ''
-    };
+  content.contentData = {
+    leftNumber: '',
+    rightNumber: '',
+    operator: '',
+    result: ''
   };
 }
 
