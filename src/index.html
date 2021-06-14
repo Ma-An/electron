@@ -9,17 +9,24 @@
     <title>Automator</title>
   </head>
   <body>
-    <header>Home</header>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <header>Home | 
+      We are using Node.js <span id="node-version"></span>,
+      Chromium <span id="chrome-version"></span>,
+      Electron <span id="electron-version"></span>,
+      and Vue.
+    </header>
 
     <div id="menu-container">
       <a href="./tabs/python/python.html"><button class="content-btn">Python</button></a>
       <a href="./tabs/router/router.html"><button class="content-btn">Router Test</button></a>
+      <button v-on:click="displayPing" class="content-btn">Ping Main</button>
     </div>
 
-    <div id="content-container">
+    <div v-if="contentType" id="content-container">
+      <div v-if="contentType === 'pinger'" id="pinger">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+        <p v-if="contentData" style="text-align: center;">Received message: {{ contentData }}</p>
+      </div>
     </div>
 
   </body>

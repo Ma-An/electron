@@ -23,6 +23,11 @@
   width: 20%;
 }
 
+.content-label {
+  float: left;
+  margin-left: 5%;
+}
+
 /* pyCalc */
 .py-text {
   font-size: 1rem;

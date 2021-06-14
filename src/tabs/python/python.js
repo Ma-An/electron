@@ -1,4 +1,3 @@
-const {ipcRenderer} = require('electron');
 const path = require('path');
 const {PythonShell} = require('python-shell');
 
@@ -6,7 +5,6 @@ const menu = new Vue({
   el: '#menu-container',
   methods: {
     displayCalc: displayCalc,
-    displayPing: displayPing,
     displayStocker: displayStocker
   }
 });
@@ -20,7 +18,6 @@ const content = new Vue({
   },
   methods: {
     pyCalculate: pyCalculate,
-    pingMain: pingMain,
     pyGetStockInfo: pyGetStockInfo
   }
 });
@@ -37,19 +34,14 @@ async function displayCalc() {
   };
 }
 
-async function displayPing() {
-  content.title = 'Pinger';
-  content.contentType = 'pinger';
-  await pingMain();
-}
-
 async function displayStocker() {
   content.title = 'Stocks';
   content.contentType = 'stocks';
 
   content.contentData = {
     ticker: '',
-    result: ''
+    currentPrice: '',
+    dailyChange: ''
   };
 }
 
@@ -75,32 +67,26 @@ async function pyCalculate() {
   }
 }
 
-async function pingMain() {
-  try {
-    ipcRenderer.send('synchronous-message', 'ping');
-    ipcRenderer.once('synchronous-reply', (event, replyContent) => {
-      content.contentData = replyContent;
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 async function pyGetStockInfo() {
   try {
     const pyshell = new PythonShell(path.join(__dirname, '/scripts/stock.py'));
-    pyshell.send(JSON.stringify(content.contentData.ticker));
+    if (content.contentData.ticker) {
+      pyshell.send(JSON.stringify(content.contentData.ticker));
 
-    pyshell.on('message', async function(result) {
-      content.contentData.result = result;
-    });
+      pyshell.on('message', async function(result) {
+        const stockInfo = JSON.parse(result);
+        content.contentData.currentPrice = stockInfo.currentPrice;
+        content.contentData.dailyChange = stockInfo.dailyChange;
+        console.log(result);
+      });
 
-    pyshell.end(function(err, code, signal) {
-      if (err) throw err;
-      console.log('The exit code was: ' + code);
-      console.log('The exit signal was: ' + signal);
-      console.log('finished');
-    });
+      pyshell.end(function(err, code, signal) {
+        if (err) throw err;
+        console.log('The exit code was: ' + code);
+        console.log('The exit signal was: ' + signal);
+        console.log('finished');
+      });
+    }
   } catch (err) {
     console.log(err);
   }

@@ -1,10 +1,24 @@
 .content-btn {
-  width: auto;
-  height: 5vw;
   display: block;
-  margin-top: 2%;
+  margin-top: 2vh;
+  width: 90%;
+  height: 5vw;
+}
+
+#menu-container {
+  display: inline-flex;
+  flex-flow: column;
+  float: left;
+  width: 15%;
 }
 
 #contentDiv {
   width: 100%;
+}
+
+#content-container {
+  display: inline-block;
+  border: 1px solid grey;
+  margin-top: 2vh;
+  width: 80%;
 }

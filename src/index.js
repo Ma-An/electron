@@ -1,14 +1,37 @@
-// react stuff
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import './index.css';
+const {ipcRenderer} = require('electron');
 
-// const HelloWorld = () => {
-//     return (
-//         <h1>
-//             @@@@@@@@@@@@@@@@@@
-//         </h1>
-//     );
-// }
+const menu = new Vue({
+  el: '#menu-container',
+  methods: {
+    displayPing: displayPing
+  }
+});
 
-// ReactDOM.render(<HelloWorld />, document.getElementById("content-container"));
+const content = new Vue({
+  el: '#content-container',
+  data: {
+    title: '',
+    contentType: '',
+    contentData: false
+  },
+  methods: {
+    pingMain: pingMain
+  }
+});
+
+async function displayPing() {
+  content.title = 'Pinger';
+  content.contentType = 'pinger';
+  await pingMain();
+}
+
+async function pingMain() {
+  try {
+    ipcRenderer.send('synchronous-message', 'ping');
+    ipcRenderer.once('synchronous-reply', (event, replyContent) => {
+      content.contentData = replyContent;
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}

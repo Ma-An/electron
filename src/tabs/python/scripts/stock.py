@@ -14,6 +14,7 @@ import sys, urllib.request, json, re
 input = sys.stdin.readlines()
 input = json.loads(input[0])
 
+stockInfo = {}
 response = urllib.request.urlopen(f'https://finance.yahoo.com/quote/{input.upper()}/')
 html = response.read().decode('utf-8', 'strict')
 
@@ -22,8 +23,13 @@ location = html.find('data-reactid="50"')
 html = html[location:]
 
 # find current price of security
-currentPrice = re.match('data-reactid="50">((\d+,*)*\.\d+)<', html)
-currentPrice = f'Current price: {currentPrice.group(1)}' if currentPrice else 'Incorrect Ticker'
+currentPrice = re.match('data-reactid="50">((\d+,?)*\.\d+)<', html)
+stockInfo["currentPrice"] = f'Current price: {currentPrice.group(1)}' if currentPrice else 'Incorrect Ticker'
 
-print(currentPrice)
+# change from open
+dailyChange = re.match('.*?data-reactid="51">(.+?%\))', html)
+stockInfo["dailyChange"] = f'Daily change: {dailyChange.group(1)}' if dailyChange else ''
+
+stockInfo = json.dumps(stockInfo)
+print(stockInfo)
 sys.stdout.flush()
