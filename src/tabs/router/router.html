@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="router.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script type="module" async src="./router.js"></script>
+  </head>
+  <header>Vue Routing Test</header>
+  <body>
+    <div id="menu-container">
+      <a href="../../index.html"><button class="content-btn">Home</button></a>
+    </div>
+
+    <div id="content-container">
+      <p><router-link to="/hello">Test Router</router-link></p>
+      <router-view></router-view>
+    </div>
+
+  </body>
+</html>

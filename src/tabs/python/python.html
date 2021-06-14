@@ -12,6 +12,7 @@
       <a href="../../index.html"><button class="content-btn">Home</button></a>
       <button v-on:click="displayCalc" class="content-btn">Calculator</button>
       <button v-on:click="displayPing" class="content-btn">Ping Main</button>
+      <button v-on:click="displayStocker" class="content-btn">Stocks</button>
     </div>
 
     <div v-if="contentType" id="content-container">
@@ -38,6 +39,15 @@
         <p v-if="contentData" style="text-align: center;">Received message: {{ contentData }}</p>
       </div>
   
+      <div v-if="contentType === 'stocks'">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+        <div style="text-align: center; margin-bottom: 2vh;">
+          <input v-model="contentData.ticker" class="content-input" style="text-align: center;"></input>
+          <button v-on:click="pyGetStockInfo">Search</button>
+          <p v-if="contentData.result">{{ contentData.result }}</p>
+        </div>
+      </div>
     </div>
+
   </body>
 </html>

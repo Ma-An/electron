@@ -1,0 +1,20 @@
+.content-btn {
+  display: block;
+  margin-top: 2vh;
+  width: 10vw;
+  height: 5vw;
+}
+
+#menu-container {
+  display: inline-flex;
+  flex-flow: column;
+  float: left;
+  width: 15%;
+}
+
+#content-container {
+  display: inline-block;
+  border: 1px solid grey;
+  margin-top: 2vh;
+  width: 80%;
+}
