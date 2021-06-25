@@ -12,6 +12,7 @@
       <a href="../../index.html"><button class="content-btn">Home</button></a>
       <button v-on:click="displayCalc" class="content-btn">Calculator</button>
       <button v-on:click="displayStocker" class="content-btn">Stocks</button>
+      <button v-on:click="displayPaycomTH" class="content-btn">Paycom</button>
     </div>
 
     <div v-if="contentType" id="content-container">
@@ -44,6 +45,18 @@
           </div>
         </div>
       </div>
+
+      <div v-if="contentType === 'paycom'">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+        <div style="text-align: center; margin-bottom: 2vh;">
+          <textarea v-model="contentData.pasteData" class="content-textarea"></textarea>
+          <button v-on:click="calculatePaycomTime">Caclulate</button>
+          <div>
+            <p class="content-label">Lunch Time: {{ contentData.lunchTime }}</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </body>

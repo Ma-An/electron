@@ -5,7 +5,8 @@ const menu = new Vue({
   el: '#menu-container',
   methods: {
     displayCalc: displayCalc,
-    displayStocker: displayStocker
+    displayStocker: displayStocker,
+    displayPaycomTH: displayPaycomTH
   }
 });
 
@@ -18,7 +19,8 @@ const content = new Vue({
   },
   methods: {
     pyCalculate: pyCalculate,
-    pyGetStockInfo: pyGetStockInfo
+    pyGetStockInfo: pyGetStockInfo,
+    calculatePaycomTime: calculatePaycomTime
   }
 });
 
@@ -42,6 +44,16 @@ async function displayStocker() {
     ticker: '',
     currentPrice: '',
     dailyChange: ''
+  };
+}
+
+async function displayPaycomTH() {
+  content.title = 'Paycom Time Helper';
+  content.contentType = 'paycom';
+
+  content.contentData = {
+    pasteData: '',
+    lunchTime: ''
   };
 }
 
@@ -78,6 +90,29 @@ async function pyGetStockInfo() {
         content.contentData.currentPrice = stockInfo.currentPrice;
         content.contentData.dailyChange = stockInfo.dailyChange;
         console.log(result);
+      });
+
+      pyshell.end(function(err, code, signal) {
+        if (err) throw err;
+        console.log('The exit code was: ' + code);
+        console.log('The exit signal was: ' + signal);
+        console.log('finished');
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function calculatePaycomTime() {
+  try {
+    const pyshell = new PythonShell(path.join(__dirname, '/scripts/paycom.py'));
+    if (content.contentData.pasteData) {
+      pyshell.send(JSON.stringify(content.contentData.pasteData));
+
+      pyshell.on('message', async function(result) {
+        console.log(result);
+        content.contentData.lunchTime = result;
       });
 
       pyshell.end(function(err, code, signal) {

@@ -23,6 +23,12 @@
   width: 20%;
 }
 
+.content-textarea {
+  width: 95%;
+  height: 15vh;
+  resize: none;
+}
+
 .content-label {
   float: left;
   margin-left: 5%;
