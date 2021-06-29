@@ -6,7 +6,8 @@ const menu = new Vue({
   methods: {
     displayCalc: displayCalc,
     displayStocker: displayStocker,
-    displayPaycomTH: displayPaycomTH
+    displayPaycomTH: displayPaycomTH,
+    displaySenatorTracker: displaySenatorTracker
   }
 });
 
@@ -20,7 +21,8 @@ const content = new Vue({
   methods: {
     pyCalculate: pyCalculate,
     pyGetStockInfo: pyGetStockInfo,
-    calculatePaycomTime: calculatePaycomTime
+    pyCalculatePaycomTime: pyCalculatePaycomTime,
+    pySenTrack: pySenTrack
   }
 });
 
@@ -54,6 +56,16 @@ async function displayPaycomTH() {
   content.contentData = {
     pasteData: '',
     lunchTime: ''
+  };
+}
+
+async function displaySenatorTracker() {
+  content.title = 'Senator Tracker';
+  content.contentType = 'senator';
+
+  content.contentData = {
+    ticker: '',
+    tradeHistory: ''
   };
 }
 
@@ -104,7 +116,7 @@ async function pyGetStockInfo() {
   }
 }
 
-async function calculatePaycomTime() {
+async function pyCalculatePaycomTime() {
   try {
     const pyshell = new PythonShell(path.join(__dirname, '/scripts/paycom.py'));
     if (content.contentData.pasteData) {
@@ -113,6 +125,29 @@ async function calculatePaycomTime() {
       pyshell.on('message', async function(result) {
         console.log(result);
         content.contentData.lunchTime = result;
+      });
+
+      pyshell.end(function(err, code, signal) {
+        if (err) throw err;
+        console.log('The exit code was: ' + code);
+        console.log('The exit signal was: ' + signal);
+        console.log('finished');
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function pySenTrack() {
+  try {
+    const pyshell = new PythonShell(path.join(__dirname, '/scripts/senator.py'));
+    if (content.contentData.ticker) {
+      pyshell.send(JSON.stringify(content.contentData.ticker));
+
+      pyshell.on('message', async function(result) {
+        content.contentData.tradeHistory = JSON.parse(result);
+        console.log(content.contentData.tradeHistory);
       });
 
       pyshell.end(function(err, code, signal) {

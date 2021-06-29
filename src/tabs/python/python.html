@@ -13,6 +13,7 @@
       <button v-on:click="displayCalc" class="content-btn">Calculator</button>
       <button v-on:click="displayStocker" class="content-btn">Stocks</button>
       <button v-on:click="displayPaycomTH" class="content-btn">Paycom</button>
+      <button v-on:click="displaySenatorTracker" class="content-btn">SenTrack</button>
     </div>
 
     <div v-if="contentType" id="content-container">
@@ -50,9 +51,29 @@
         <p id="content-title" style="text-align: center;">{{ title }}</p>
         <div style="text-align: center; margin-bottom: 2vh;">
           <textarea v-model="contentData.pasteData" class="content-textarea"></textarea>
-          <button v-on:click="calculatePaycomTime">Caclulate</button>
+          <button v-on:click="pyCalculatePaycomTime">Caclulate</button>
           <div>
             <p class="content-label">Lunch Time: {{ contentData.lunchTime }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="contentType === 'senator'">
+        <p id="content-title" style="text-align: center;">{{ title }}</p>
+        <div style="text-align: center; margin-bottom: 2vh;">
+          <div>
+            <input v-model="contentData.ticker" class="content-input" style="text-align: center;" placeholder="Ticker"></input>
+            <button v-on:click="pySenTrack">Search</button>
+
+            <div id="sen-history" v-if="contentData.tradeHistory">
+              <div v-for="(row, index) in contentData.tradeHistory" style="display: flow-root;" v-bind:style="[index % 2 === 0 ? {'background-color': '#ecf0f3'} : {}]">
+                <p class="sen-title"><b>Reporter:</b> {{ row.reporter }}</p>
+                <p class="sen-title"><b>Ownership:</b> {{ row.ownership }} </p>
+                <p class="sen-data">{{ row.transaction_type }}</p>
+                <p class="sen-data">{{ row.security }} {{ row.transaction_amount }}</p>
+              </div>
+            </div>
+        
           </div>
         </div>
       </div>
