@@ -19,7 +19,6 @@ soup = BeautifulSoup(response, 'lxml', from_encoding=response.info().get_param('
 
 transactionInfo = ['filed_transaction_date', 'security', 'reporter', 'transaction_type', 'transaction_amount', 'ownership']
 transactionData = []
-reporterInfo = []
 
 index = 0
 rowData = {}
@@ -32,6 +31,21 @@ for row in soup.table.find_all('tr')[1:20]:
     rowData[transactionInfo[index]] =  data.text.replace('\n20', ' 20').replace('-- ', '').replace('\n', '')
     index += 1
 
+# break up senator's full name
+sep = '['
+sepB = ' '
+nameList = []
+for index, record in enumerate(transactionData):
+  nameList = record['reporter'].split(sep, 1)[0].strip().replace(',', '').split()
+  temp = record['transaction_type'].split()
+  transactionData[index]['senator_code'] = temp[len(temp) - 1].strip()
+  if (len(nameList) >= 3):
+    transactionData[index]['first_name'] = nameList[0]
+    transactionData[index]['middle_ini'] = nameList[1]
+    transactionData[index]['last_name'] = nameList[2]
+  else:
+    transactionData[index]['first_name'] = nameList[0]
+    transactionData[index]['last_name'] = nameList[1]
 
 transactionData = json.dumps(transactionData)
 print (transactionData)

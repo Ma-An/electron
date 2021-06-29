@@ -22,7 +22,8 @@ const content = new Vue({
     pyCalculate: pyCalculate,
     pyGetStockInfo: pyGetStockInfo,
     pyCalculatePaycomTime: pyCalculatePaycomTime,
-    pySenTrack: pySenTrack
+    pySenTrack: pySenTrack,
+    urlOpener: urlOpener
   }
 });
 
@@ -157,6 +158,16 @@ async function pySenTrack() {
         console.log('finished');
       });
     }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function urlOpener(data) {
+  try {
+    const urlPiece = data.middle_ini ? `${data.last_name}/${data.first_name}+${data.middle_ini}` : `${data.last_name}/${data.first_name}`;
+    const url = `https://sec.report/Senate-Stock-Disclosures/${urlPiece}/${data.senator_code}`;
+    window.open(url, '_blank', 'top=500,left=200,frame=true,nodeIntegration=no');
   } catch (err) {
     console.log(err);
   }

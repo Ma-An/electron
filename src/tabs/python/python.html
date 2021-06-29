@@ -69,7 +69,7 @@
               <div v-for="(row, index) in contentData.tradeHistory" style="display: flow-root;" v-bind:style="[index % 2 === 0 ? {'background-color': '#ecf0f3'} : {}]">
                 <p class="sen-title"><b>Reporter:</b> {{ row.reporter }}</p>
                 <p class="sen-title"><b>Ownership:</b> {{ row.ownership }} </p>
-                <p class="sen-data">{{ row.transaction_type }}</p>
+                <a href="javascript:void(0)" @click="urlOpener(row)" class="sen-data">{{ row.transaction_type }}</a>
                 <p class="sen-data">{{ row.security }} {{ row.transaction_amount }}</p>
               </div>
             </div>
